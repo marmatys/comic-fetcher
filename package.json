@@ -1,0 +1,16 @@
+{
+  "name": "comic-fetcher",
+  "version": "1.0.0",
+  "description": "Fetch comics and send them",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marcin Armatys",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cheerio": "^0.22.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
+  }
+}
