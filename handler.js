@@ -1,22 +1,24 @@
 'use strict';
 
-const request = require('request-promise');
-const cheerio = require('cheerio');
+const fetch = require('./services/fetch');
+const notify = require('./services/notify');
+
+let config;
+try {
+    config = require('./config')
+} catch(e) {
+    config = {
+        notifyUrl : 'http://www.example.com'
+    }
+}
 
 module.exports.checkComics = (event, context, callback) => {
-    fetchDilbert()
-        .then(body => getImage(body))
-        .then(url => console.info(url))
+    fetch.getDilbertComicUrl()
+        .then(url => notify.notifySlack(config.notifyUrl, url))
         .then(() => callback(null, 'OK'))
         .catch(err => callback(err, null));
-
-    function getImage(body) {
-        const $ = cheerio.load(body);
-        return $('.img-comic')[0].src;
-    }
-
-    function fetchDilbert() {
-        return request({uri: 'http://dilbert.com/'});
-    }
 };
 
+module.exports.checkComics(null, null, arg => {
+    console.info('callback', arg)
+});
