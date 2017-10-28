@@ -17,6 +17,8 @@ module.exports.checkComics = (event, context, callback) => {
         .then(url => notify.notifySlack(config.notifyUrl, url))
         .then(fetch.getGarfieldComicUrl)
         .then(url => notify.notifySlack(config.notifyUrl, url))
+        .then(fetch.getCommitStripUrl)
+        .then(url => notify.notifySlack(config.notifyUrl, url))
         .then(() => callback(null, 'OK'))
         .catch(err => callback(err, null));
 };

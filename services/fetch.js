@@ -47,7 +47,30 @@ module.exports = {
                 path: '/'
             });
         }
+    },
 
+    getCommitStripUrl : function () {
+        return fetchCommitStripSite()
+            .then(body => getFirstUrl(body))
+            .then(url => fetchDetailPage(url))
+            .then(body => getImage(body));
 
+        function getImage(body) {
+            const $ = cheerio.load(body);
+            return $('.entry-content img')[0].attribs.src;
+        }
+
+        function fetchDetailPage(url) {
+            return request({uri: url});
+        }
+
+        function fetchCommitStripSite() {
+            return request({uri: 'http://www.commitstrip.com/en/'});
+        }
+
+        function getFirstUrl(body) {
+            const $ = cheerio.load(body);
+            return $('.excerpt:first-child a')[0].attribs.href;
+        }
     }
 };

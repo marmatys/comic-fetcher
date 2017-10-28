@@ -6,7 +6,6 @@ const fetch = require('../services/fetch');
 describe('fetch', () => {
 
     afterEach(function () {
-        console.log('clean');
         nock.cleanAll();
     });
 
@@ -26,5 +25,21 @@ describe('fetch', () => {
 
         return fetch.getGarfieldComicUrl()
             .then(url => expect(url).toEqual('https://1'));
+    });
+
+    it('get img url for commitstrip', () => {
+        nock('http://www.commitstrip.com/en')
+            .get('/')
+            .reply(200, `
+                <body>
+                    <div class="excerpt"><a href="http://www.commitstrip.com/en/2017/10/18"></a></div>
+                    <div class="excerpt"><a href="http://www.commitstrip.com/en/2017/10/01"></a></div>
+                </body>
+            `)
+            .get('/2017/10/18')
+            .reply(200, '<div class="entry-content"><p><img src="http://1.jpg"></p></div>');
+
+        return fetch.getCommitStripUrl()
+            .then(url => expect(url).toEqual('http://1.jpg'));
     });
 });
