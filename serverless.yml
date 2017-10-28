@@ -26,4 +26,6 @@ package:
 functions:
   comicFetch:
     handler: handler.checkComics
+    events:
+          - schedule: cron(10 10 ? * * *)
 
