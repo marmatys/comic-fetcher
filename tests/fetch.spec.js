@@ -18,4 +18,13 @@ describe('fetch', () => {
         return fetch.getDilbertComicUrl()
             .then(url => expect(url).toEqual('1'));
     });
+
+    it('get img url for garfield', () => {
+        nock('https://garfield.com')
+            .get('/')
+            .reply(200, '<img class="img-responsive" src="https://1">');
+
+        return fetch.getGarfieldComicUrl()
+            .then(url => expect(url).toEqual('https://1'));
+    });
 });

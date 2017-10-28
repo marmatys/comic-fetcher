@@ -10,7 +10,8 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "jest": "^21.2.1",
-    "nock": "^9.0.25"
+    "nock": "^9.0.25",
+    "tough-cookie": "^2.3.3"
   },
   "dependencies": {
     "cheerio": "^0.22.0",
