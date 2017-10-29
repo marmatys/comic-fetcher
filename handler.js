@@ -22,7 +22,3 @@ module.exports.checkComics = (event, context, callback) => {
         .then(() => callback(null, 'OK'))
         .catch(err => callback(err, null));
 };
-
-module.exports.checkComics(null, null, arg => {
-    console.info('callback', arg)
-});

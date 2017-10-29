@@ -9,3 +9,4 @@ jspm_packages
 .idea/
 *.iml
 config.js
+handler-runner.js
