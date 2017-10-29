@@ -2,6 +2,7 @@
 
 const fetch = require('./services/fetch');
 const notify = require('./services/notify');
+const persist = require('./services/persist');
 
 let config;
 try {
@@ -14,10 +15,13 @@ try {
 
 module.exports.checkComics = (event, context, callback) => {
     fetch.getDilbertComicUrl()
+        .then(imgUrl => persist.putIfNotExists('dilbert', imgUrl))
         .then(url => notify.notifySlack(config.notifyUrl, url))
         .then(fetch.getGarfieldComicUrl)
+        .then(imgUrl => persist.putIfNotExists('garfield', imgUrl))
         .then(url => notify.notifySlack(config.notifyUrl, url))
         .then(fetch.getCommitStripUrl)
+        .then(imgUrl => persist.putIfNotExists('commitstrip', imgUrl))
         .then(url => notify.notifySlack(config.notifyUrl, url))
         .then(() => callback(null, 'OK'))
         .catch(err => callback(err, null));

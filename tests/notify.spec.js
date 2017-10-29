@@ -2,6 +2,7 @@
 
 const nock = require('nock');
 const notify = require('../services/notify');
+const _ = require('lodash');
 
 describe('notify', () => {
 
@@ -20,5 +21,17 @@ describe('notify', () => {
 
         return notify.notifySlack(notifyUrl, imgUrl)
             .then(() => expect(request.isDone()).toBeTruthy());
+    });
+
+    _.each([undefined, null], imgUrl => {
+        it(`does not notify for ${imgUrl} url`, () => {
+            let notifyUrl = 'http://www.example.com';
+            let request = nock(notifyUrl)
+                .post('/')
+                .reply(200);
+
+            return notify.notifySlack(notifyUrl, imgUrl)
+                .then(() => expect(request.isDone()).toBeFalsy());
+        })
     });
 });
