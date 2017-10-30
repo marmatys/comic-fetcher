@@ -26,7 +26,7 @@ module.exports.checkComics = (event, context, callback) => {
         .then(fetch.getXKCDUrl)
         .then(imgUrl => persist.putIfNotExists('xkcd', imgUrl))
         .then(url => notify.notifySlack(config.notifyUrl, url))
-        .then(fetch.getDaily)
+        .then(fetch.getDailyUrl)
         .then(imgUrl => persist.putIfNotExists('daily', imgUrl))
         .then(url => notify.notifySlack(config.notifyUrl, url))
         .then(() => callback(null, 'OK'))
