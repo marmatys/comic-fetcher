@@ -19,6 +19,12 @@ function getXKCDUrl() {
         .then(url => 'https:' + url);
 }
 
+function getDailyUrl() {
+    return request({url: 'http://daily.art.pl'})
+        .then(body => getImage(body, '#daily img'))
+        .then(url => 'http://daily.art.pl' + url);
+}
+
 function getGarfieldComicUrl() {
     return fetchGarfieldSite()
         .then(body => getImage(body, 'img.img-responsive'));
@@ -73,5 +79,6 @@ module.exports = {
     getDilbertComicUrl : getDilbertComicUrl,
     getGarfieldComicUrl : getGarfieldComicUrl,
     getCommitStripUrl : getCommitStripUrl,
-    getXKCDUrl : getXKCDUrl
+    getXKCDUrl : getXKCDUrl,
+    getDailyUrl : getDailyUrl
 };

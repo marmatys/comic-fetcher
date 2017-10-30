@@ -51,4 +51,13 @@ describe('fetch', () => {
         return fetch.getXKCDUrl()
             .then(url => expect(url).toEqual('https://digital_resource_lifespan.png'));
     });
+
+    it('get img url for daily', () => {
+        nock('http://daily.art.pl')
+            .get('/')
+            .reply(200, `<div id="daily"> <img src="/img/1.png"> </div>`);
+
+        return fetch.getDailyUrl()
+            .then(url => expect(url).toEqual('http://daily.art.pl/img/1.png'))
+    });
 });
