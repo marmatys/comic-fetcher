@@ -1,5 +1,6 @@
-# For full config options, check the docs:
-#    docs.serverless.com
+# Welcome to Serverless!
+# Happy Coding!
+
 service: comic-fetcher
 
 provider:

@@ -25,14 +25,16 @@ function writeParams(comicName, imgUrl) {
     }
 }
 
+function putIfNotExists(comicName, imgUrl) {
+    const db = new aws.DynamoDB();
+    let alreadyExists = false;
+    return db.getItem(readParams(comicName)).promise()
+        .then(result => alreadyExists = !_.isNil(result.Item) && result.Item.lastSeenUrl.S === imgUrl)
+        .then(() => !alreadyExists ? db.putItem(writeParams(comicName, imgUrl)).promise() : null)
+        .then(() => alreadyExists ? null : imgUrl)
+        .catch(err => console.error('Error during Dynamo access', err));
+}
+
 module.exports = {
-    putIfNotExists : function (comicName, imgUrl) {
-        const db = new aws.DynamoDB();
-        let alreadyExists = false;
-        return db.getItem(readParams(comicName)).promise()
-            .then(result => alreadyExists = !_.isNil(result) && result.Item.lastSeenUrl === imgUrl)
-            .then(() => !alreadyExists ? db.putItem(writeParams(comicName, imgUrl)).promise() : null)
-            .then(() => alreadyExists ? null : imgUrl)
-            .catch(err => console.error('Error during Dynamo access', err));
-    }
+    putIfNotExists : putIfNotExists
 };
