@@ -23,6 +23,18 @@ describe('persist', () => {
             .then(result => expect(result).toEqual('http://example.com/1.jpg'))
     });
 
+    it('returns non existing item', () => {
+        aws.mock('DynamoDB', 'putItem', function (params, callback){
+            callback(null, "OK");
+        });
+        aws.mock('DynamoDB', 'getItem', function (params, callback){
+            callback(null, {Item : {lastSeenUrl : 'http://example.com/1.jpg'}});
+        });
+
+        return persist.putIfNotExists('garfield', 'http://example.com/2.jpg')
+            .then(result => expect(result).toEqual('http://example.com/2.jpg'))
+    });
+
     it('adds new item', () => {
         aws.mock('DynamoDB', 'putItem', function (params, callback){
             expect(params.TableName).toEqual('comics');
@@ -37,12 +49,26 @@ describe('persist', () => {
         return persist.putIfNotExists('garfield', 'http://example.com/1.jpg');
     });
 
+    it('updates', () => {
+        aws.mock('DynamoDB', 'putItem', function (params, callback){
+            expect(params.TableName).toEqual('comics');
+            expect(params.Item.name.S).toEqual('garfield');
+            expect(params.Item.lastSeenUrl.S).toEqual('http://example.com/2.jpg');
+            callback(null, "OK");
+        });
+        aws.mock('DynamoDB', 'getItem', function (params, callback){
+            callback(null, {Item : {lastSeenUrl : 'http://example.com/1.jpg'}});
+        });
+
+        return persist.putIfNotExists('garfield', 'http://example.com/2.jpg');
+    });
+
     it('returns null for existing item', () => {
         aws.mock('DynamoDB', 'putItem', function (params, callback){
             callback(null, "OK");
         });
         aws.mock('DynamoDB', 'getItem', function (params, callback){
-            callback(null, {});
+            callback(null, {Item : {lastSeenUrl : 'http://example.com/1.jpg'}});
         });
 
         return persist.putIfNotExists('garfield', 'http://example.com/1.jpg')
@@ -56,7 +82,7 @@ describe('persist', () => {
             callback(null, "OK");
         });
         aws.mock('DynamoDB', 'getItem', function (params, callback){
-            callback(null, {});
+            callback(null, {Item : {lastSeenUrl : 'http://example.com/1.jpg'}});
         });
 
         return persist.putIfNotExists('garfield', 'http://example.com/1.jpg')
