@@ -5,6 +5,11 @@ service: comic-fetcher
 provider:
   name: aws
   runtime: nodejs6.10
+  iamRoleStatements:
+    - Effect: "Allow"
+      Resource: "arn:aws:dynamodb:us-east-1:*:table/comics"
+      Action:
+        - "dynamodb:*"
 
 # you can overwrite defaults here
 #  stage: dev
