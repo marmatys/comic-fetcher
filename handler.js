@@ -23,6 +23,9 @@ module.exports.checkComics = (event, context, callback) => {
         .then(fetch.getCommitStripUrl)
         .then(imgUrl => persist.putIfNotExists('commitstrip', imgUrl))
         .then(url => notify.notifySlack(config.notifyUrl, url))
+        .then(fetch.getXKCDUrl)
+        .then(imgUrl => persist.putIfNotExists('xkcd', imgUrl))
+        .then(url => notify.notifySlack(config.notifyUrl, url))
         .then(() => callback(null, 'OK'))
         .catch(err => callback(err, null));
 };

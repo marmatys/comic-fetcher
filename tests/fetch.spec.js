@@ -42,4 +42,13 @@ describe('fetch', () => {
         return fetch.getCommitStripUrl()
             .then(url => expect(url).toEqual('http://1.jpg'));
     });
+
+    it('get img url for xkcd', () => {
+        nock('https://xkcd.com')
+            .get('/')
+            .reply(200, '<div id="comic"> <img src="//digital_resource_lifespan.png"> </div>');
+
+        return fetch.getXKCDUrl()
+            .then(url => expect(url).toEqual('https://digital_resource_lifespan.png'));
+    });
 });
