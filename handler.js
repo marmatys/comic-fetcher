@@ -3,6 +3,7 @@
 const fetch = require('./services/fetch');
 const notify = require('./services/notify');
 const persist = require('./services/persist');
+const Q = require('q');
 
 let config;
 try {
@@ -13,22 +14,32 @@ try {
     }
 }
 
+const comicConfig = [
+    {
+        name : 'dilbert',
+        fetcher : fetch.getDilbertComicUrl
+    }, {
+        name : 'garfield',
+        fetcher : fetch.getGarfieldComicUrl
+    }, {
+        name : 'commitstrip',
+        fetcher : fetch.getCommitStripUrl
+    }, {
+        name : 'xkcd',
+        fetcher : fetch.getXKCDUrl
+    }, {
+        name : 'daily',
+        fetcher : fetch.getDailyUrl
+    }
+];
+
 module.exports.checkComics = (event, context, callback) => {
-    fetch.getDilbertComicUrl()
-        .then(imgUrl => persist.putIfNotExists('dilbert', imgUrl))
-        .then(url => notify.notifySlack(config.notifyUrl, url))
-        .then(fetch.getGarfieldComicUrl)
-        .then(imgUrl => persist.putIfNotExists('garfield', imgUrl))
-        .then(url => notify.notifySlack(config.notifyUrl, url))
-        .then(fetch.getCommitStripUrl)
-        .then(imgUrl => persist.putIfNotExists('commitstrip', imgUrl))
-        .then(url => notify.notifySlack(config.notifyUrl, url))
-        .then(fetch.getXKCDUrl)
-        .then(imgUrl => persist.putIfNotExists('xkcd', imgUrl))
-        .then(url => notify.notifySlack(config.notifyUrl, url))
-        .then(fetch.getDailyUrl)
-        .then(imgUrl => persist.putIfNotExists('daily', imgUrl))
-        .then(url => notify.notifySlack(config.notifyUrl, url))
+
+    Q.all(Array.from(comicConfig, commic => {
+       commic.fetcher()
+           .then(imgUrl => persist.putIfNotExists(commic.name, imgUrl))
+           .then(url => notify.notifySlack(config.notifyUrl, url))
+    }))
         .then(() => callback(null, 'OK'))
         .catch(err => callback(err, null));
 };
