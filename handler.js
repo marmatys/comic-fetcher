@@ -30,8 +30,7 @@ const comicConfig = [
     }, {
         name : 'daily',
         fetcher : fetch.getDailyUrl
-    }
-];
+    }];
 
 module.exports.checkComics = (event, context, callback) => {
 
