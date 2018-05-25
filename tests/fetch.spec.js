@@ -9,7 +9,7 @@ describe('fetch', () => {
         nock.cleanAll();
     });
 
-    it('get img url for dibert', () => {
+    it('get img url for dilbert', () => {
         nock('http://dilbert.com')
             .get('/')
             .reply(200, '<img class="img-comic" src="1"><img class="img-comic" src="2">');
