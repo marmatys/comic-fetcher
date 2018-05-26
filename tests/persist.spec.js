@@ -12,10 +12,10 @@ describe('persist - putIfNotExists', () => {
     });
 
     it('returns url for new comic', async () => {
-        aws.mock('DynamoDB', 'putItem', function (params, callback){
+        aws.mock('DynamoDB', 'putItem', (params, callback) => {
             callback(null, "OK");
         });
-        aws.mock('DynamoDB', 'getItem', function (params, callback){
+        aws.mock('DynamoDB', 'getItem', (params, callback) => {
             callback(null, {});
         });
 
@@ -25,10 +25,10 @@ describe('persist - putIfNotExists', () => {
     });
 
     it('returns new url for already existing comic', async () => {
-        aws.mock('DynamoDB', 'putItem', function (params, callback){
+        aws.mock('DynamoDB', 'putItem', (params, callback) => {
             callback(null, "OK");
         });
-        aws.mock('DynamoDB', 'getItem', function (params, callback){
+        aws.mock('DynamoDB', 'getItem', (params, callback) => {
             callback(null, {Item : {lastSeenUrl : {S : 'http://example.com/1.jpg'}}});
         });
 
@@ -38,13 +38,13 @@ describe('persist - putIfNotExists', () => {
     });
 
     it('adds new item', async () => {
-        aws.mock('DynamoDB', 'putItem', function (params, callback) {
+        aws.mock('DynamoDB', 'putItem', (params, callback) => {
             expect(params.TableName).toEqual('comics');
             expect(params.Item.name.S).toEqual('garfield');
             expect(params.Item.lastSeenUrl.S).toEqual('http://example.com/1.jpg');
             callback(null, "OK");
         });
-        aws.mock('DynamoDB', 'getItem', function (params, callback) {
+        aws.mock('DynamoDB', 'getItem', (params, callback) => {
             callback(null, {});
         });
 
@@ -52,13 +52,13 @@ describe('persist - putIfNotExists', () => {
     });
 
     it('updates item with new url', async () => {
-        aws.mock('DynamoDB', 'putItem', function (params, callback){
+        aws.mock('DynamoDB', 'putItem', (params, callback) => {
             expect(params.TableName).toEqual('comics');
             expect(params.Item.name.S).toEqual('garfield');
             expect(params.Item.lastSeenUrl.S).toEqual('http://example.com/2.jpg');
             callback(null, "OK");
         });
-        aws.mock('DynamoDB', 'getItem', function (params, callback){
+        aws.mock('DynamoDB', 'getItem', (params, callback) => {
             callback(null, {Item : {lastSeenUrl : {S : 'http://example.com/1.jpg'}}});
         });
 
@@ -66,10 +66,10 @@ describe('persist - putIfNotExists', () => {
     });
 
     it('returns null for existing comic', async () => {
-        aws.mock('DynamoDB', 'putItem', function (params, callback){
+        aws.mock('DynamoDB', 'putItem', (params, callback) => {
             callback(null, "OK");
         });
-        aws.mock('DynamoDB', 'getItem', function (params, callback){
+        aws.mock('DynamoDB', 'getItem', (params, callback) => {
             callback(null, {Item : {lastSeenUrl : {S : 'http://example.com/1.jpg'}}});
         });
 
@@ -80,11 +80,11 @@ describe('persist - putIfNotExists', () => {
 
     it('does not update existing comic', async () => {
         let putReceived = false;
-        aws.mock('DynamoDB', 'putItem', function (params, callback){
+        aws.mock('DynamoDB', 'putItem', (params, callback) => {
             putReceived = true;
             callback(null, "OK");
         });
-        aws.mock('DynamoDB', 'getItem', function (params, callback){
+        aws.mock('DynamoDB', 'getItem', (params, callback) => {
             callback(null, {Item : {lastSeenUrl : {S : 'http://example.com/1.jpg'}}});
         });
 
