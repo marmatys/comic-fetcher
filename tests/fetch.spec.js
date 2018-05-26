@@ -9,25 +9,27 @@ describe('fetch', () => {
         nock.cleanAll();
     });
 
-    it('get img url for dilbert', () => {
+    it('get img url for dilbert', async () => {
         nock('http://dilbert.com')
             .get('/')
             .reply(200, '<img class="img-comic" src="1"><img class="img-comic" src="2">');
 
-        return fetch.getDilbertComicUrl()
-            .then(url => expect(url).toEqual('1'));
+        const url = await fetch.getDilbertComicUrl();
+
+        expect(url).toEqual('1');
     });
 
-    it('get img url for garfield', () => {
+    it('get img url for garfield', async () => {
         nock('https://garfield.com')
             .get('/')
             .reply(200, '<img class="img-responsive" src="https://1">');
 
-        return fetch.getGarfieldComicUrl()
-            .then(url => expect(url).toEqual('https://1'));
+        const url = await fetch.getGarfieldComicUrl();
+        
+        expect(url).toEqual('https://1');
     });
 
-    it('get img url for commitstrip', () => {
+    it('get img url for commitstrip', async () => {
         nock('http://www.commitstrip.com/en')
             .get('/')
             .reply(200, `
@@ -39,29 +41,32 @@ describe('fetch', () => {
             .get('/2017/10/18')
             .reply(200, '<div class="entry-content"><p><img src="http://1.jpg"></p></div>');
 
-        return fetch.getCommitStripUrl()
-            .then(url => expect(url).toEqual('http://1.jpg'));
+        const url = await fetch.getCommitStripUrl();
+        
+        expect(url).toEqual('http://1.jpg');
     });
 
-    it('get img url for xkcd', () => {
+    it('get img url for xkcd', async () => {
         nock('https://xkcd.com')
             .get('/')
             .reply(200, '<div id="comic"> <img src="//digital_resource_lifespan.png"> </div>');
 
-        return fetch.getXKCDUrl()
-            .then(url => expect(url).toEqual('https://digital_resource_lifespan.png'));
+        const url = await fetch.getXKCDUrl();
+        
+        expect(url).toEqual('https://digital_resource_lifespan.png');
     });
 
-    it('get img url for daily', () => {
+    it('get img url for daily', async () => {
         nock('http://daily.art.pl')
             .get('/')
             .reply(200, `<div id="daily"> <img src="/img/1.png"> </div>`);
 
-        return fetch.getDailyUrl()
-            .then(url => expect(url).toEqual('http://daily.art.pl/img/1.png'))
+        const url = await fetch.getDailyUrl();
+        
+        expect(url).toEqual('http://daily.art.pl/img/1.png');
     });
 
-    it('get img url for turnoff', () => {
+    it('get img url for turnoff', async () => {
         nock('http://turnoff.us/')
             .get('/')
             .reply(200, `
@@ -72,7 +77,8 @@ describe('fetch', () => {
                 </body>
             `);
 
-        return fetch.getTurnoffUrl()
-            .then(url => expect(url).toEqual('http://turnoff.us/image/en/depressed-developer-22.png'))
+        const url = await fetch.getTurnoffUrl();
+        
+        expect(url).toEqual('http://turnoff.us/image/en/depressed-developer-22.png');
     });
 });

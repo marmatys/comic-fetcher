@@ -10,7 +10,7 @@ describe('notify', () => {
         nock.cleanAll();
     });
 
-    it('notifies slack with url', () => {
+    it('notifies slack with url', async () => {
         let imgUrl = '1.jpg';
         let notifyUrl = 'http://www.example.com';
         let request = nock(notifyUrl)
@@ -19,19 +19,21 @@ describe('notify', () => {
             })
             .reply(200);
 
-        return notify.notifySlack(notifyUrl, imgUrl)
-            .then(() => expect(request.isDone()).toBeTruthy());
+        await notify.notifySlack(notifyUrl, imgUrl);
+        
+        expect(request.isDone()).toBeTruthy();
     });
 
     _.each([undefined, null], imgUrl => {
-        it(`does not notify for ${imgUrl} url`, () => {
+        it(`does not notify for ${imgUrl} url`, async () => {
             let notifyUrl = 'http://www.example.com';
             let request = nock(notifyUrl)
                 .post('/')
                 .reply(200);
 
-            return notify.notifySlack(notifyUrl, imgUrl)
-                .then(() => expect(request.isDone()).toBeFalsy());
+            await notify.notifySlack(notifyUrl, imgUrl);
+
+            expect(request.isDone()).toBeFalsy();
         })
     });
 });

@@ -11,7 +11,7 @@ describe('persist - putIfNotExists', () => {
         aws.restore('DynamoDB');
     });
 
-    it('returns url for new comic', () => {
+    it('returns url for new comic', async () => {
         aws.mock('DynamoDB', 'putItem', function (params, callback){
             callback(null, "OK");
         });
@@ -19,11 +19,12 @@ describe('persist - putIfNotExists', () => {
             callback(null, {});
         });
 
-        return persist.putIfNotExists('garfield', 'http://example.com/1.jpg')
-            .then(result => expect(result).toEqual('http://example.com/1.jpg'))
+        const result = await persist.putIfNotExists('garfield', 'http://example.com/1.jpg');
+            
+        expect(result).toEqual('http://example.com/1.jpg');
     });
 
-    it('returns new url for already existing comic', () => {
+    it('returns new url for already existing comic', async () => {
         aws.mock('DynamoDB', 'putItem', function (params, callback){
             callback(null, "OK");
         });
@@ -31,25 +32,26 @@ describe('persist - putIfNotExists', () => {
             callback(null, {Item : {lastSeenUrl : {S : 'http://example.com/1.jpg'}}});
         });
 
-        return persist.putIfNotExists('garfield', 'http://example.com/2.jpg')
-            .then(result => expect(result).toEqual('http://example.com/2.jpg'))
+        const result = await persist.putIfNotExists('garfield', 'http://example.com/2.jpg');
+            
+        expect(result).toEqual('http://example.com/2.jpg');
     });
 
-    it('adds new item', () => {
-        aws.mock('DynamoDB', 'putItem', function (params, callback){
+    it('adds new item', async () => {
+        aws.mock('DynamoDB', 'putItem', function (params, callback) {
             expect(params.TableName).toEqual('comics');
             expect(params.Item.name.S).toEqual('garfield');
             expect(params.Item.lastSeenUrl.S).toEqual('http://example.com/1.jpg');
             callback(null, "OK");
         });
-        aws.mock('DynamoDB', 'getItem', function (params, callback){
+        aws.mock('DynamoDB', 'getItem', function (params, callback) {
             callback(null, {});
         });
 
-        return persist.putIfNotExists('garfield', 'http://example.com/1.jpg');
+        await persist.putIfNotExists('garfield', 'http://example.com/1.jpg');
     });
 
-    it('updates item with new url', () => {
+    it('updates item with new url', async () => {
         aws.mock('DynamoDB', 'putItem', function (params, callback){
             expect(params.TableName).toEqual('comics');
             expect(params.Item.name.S).toEqual('garfield');
@@ -60,10 +62,10 @@ describe('persist - putIfNotExists', () => {
             callback(null, {Item : {lastSeenUrl : {S : 'http://example.com/1.jpg'}}});
         });
 
-        return persist.putIfNotExists('garfield', 'http://example.com/2.jpg');
+        await persist.putIfNotExists('garfield', 'http://example.com/2.jpg');
     });
 
-    it('returns null for existing comic', () => {
+    it('returns null for existing comic', async () => {
         aws.mock('DynamoDB', 'putItem', function (params, callback){
             callback(null, "OK");
         });
@@ -71,11 +73,12 @@ describe('persist - putIfNotExists', () => {
             callback(null, {Item : {lastSeenUrl : {S : 'http://example.com/1.jpg'}}});
         });
 
-        return persist.putIfNotExists('garfield', 'http://example.com/1.jpg')
-            .then(result => expect(result).toBeNull())
+        const result = await persist.putIfNotExists('garfield', 'http://example.com/1.jpg');
+            
+        expect(result).toBeNull();
     });
 
-    it('does not update existing comic', () => {
+    it('does not update existing comic', async () => {
         let putReceived = false;
         aws.mock('DynamoDB', 'putItem', function (params, callback){
             putReceived = true;
@@ -85,8 +88,9 @@ describe('persist - putIfNotExists', () => {
             callback(null, {Item : {lastSeenUrl : {S : 'http://example.com/1.jpg'}}});
         });
 
-        return persist.putIfNotExists('garfield', 'http://example.com/1.jpg')
-            .then(() => expect(putReceived).toBeFalsy());
+        await persist.putIfNotExists('garfield', 'http://example.com/1.jpg');
+            
+        expect(putReceived).toBeFalsy();
     });
 
 });

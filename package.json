@@ -19,6 +19,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "aws-sdk-mock": "^1.7.0",
+    "babel-preset-env": "^1.7.0",
     "jest": "^21.2.1",
     "nock": "^9.0.25"
   },
