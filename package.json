@@ -14,13 +14,13 @@
     "nock": "^9.0.25"
   },
   "dependencies": {
-    "aws-sdk": "^2.141.0",
+    "aws-sdk": "^2.247.1",
     "cheerio": "^0.22.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.10",
     "q": "^1.5.1",
-    "request": "^2.81.0",
-    "request-promise": "^4.2.1",
-    "tough-cookie": "^2.3.3"
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "tough-cookie": "^2.3.4"
   },
   "jest": {
     "testEnvironment": "node"
