@@ -30,6 +30,9 @@ const comicConfig = [
     }, {
         name : 'daily',
         fetcher : fetch.getDailyUrl
+    }, {
+        name : 'turnoff',
+        fetcher : fetch.getTurnoffUrl
     }];
 
 module.exports.checkComics = (event, context, callback) => {

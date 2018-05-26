@@ -60,4 +60,19 @@ describe('fetch', () => {
         return fetch.getDailyUrl()
             .then(url => expect(url).toEqual('http://daily.art.pl/img/1.png'))
     });
+
+    it('get img url for turnoff', () => {
+        nock('http://turnoff.us/')
+            .get('/')
+            .reply(200, `
+                <body>
+                    <article class="post-content">
+                        <p><img src="/image/en/depressed-developer-22.png" alt="The Depressed Developer 22 geek comic"></p>
+                    </article>
+                </body>
+            `);
+
+        return fetch.getTurnoffUrl()
+            .then(url => expect(url).toEqual('http://turnoff.us/image/en/depressed-developer-22.png'))
+    });
 });

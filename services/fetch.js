@@ -25,6 +25,12 @@ function getDailyUrl() {
         .then(url => 'http://daily.art.pl' + url);
 }
 
+function getTurnoffUrl() {
+    return request({url: 'http://turnoff.us/'})
+        .then(body => getImage(body, '.post-content img'))
+        .then(url => 'http://turnoff.us' + url);
+}
+
 function getGarfieldComicUrl() {
     return fetchGarfieldSite()
         .then(body => getImage(body, 'img.img-responsive'));
@@ -80,5 +86,6 @@ module.exports = {
     getGarfieldComicUrl : getGarfieldComicUrl,
     getCommitStripUrl : getCommitStripUrl,
     getXKCDUrl : getXKCDUrl,
-    getDailyUrl : getDailyUrl
+    getDailyUrl : getDailyUrl,
+    getTurnoffUrl : getTurnoffUrl
 };
