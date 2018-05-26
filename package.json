@@ -2,9 +2,18 @@
   "name": "comic-fetcher",
   "version": "1.0.0",
   "description": "Fetch comics and send them to notification channels",
+  "keywords": [
+    "comics",
+    "serveless",
+    "aws-lambda"
+  ],
   "main": "handler.js",
   "scripts": {
     "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marmatys/comic-fetcher"
   },
   "author": "Marcin Armatys",
   "license": "Apache-2.0",
