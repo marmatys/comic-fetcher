@@ -1,7 +1,5 @@
-"use strict";
-
 const request = require('request-promise');
-const _  = require('lodash');
+const _ = require('lodash');
 const q = require('q');
 
 module.exports = {

@@ -1,10 +1,7 @@
-"use strict";
-
 const nock = require('nock');
 const fetch = require('../services/fetch');
 
 describe('fetch', () => {
-
     afterEach(function () {
         nock.cleanAll();
     });
@@ -25,7 +22,7 @@ describe('fetch', () => {
             .reply(200, '<img class="img-responsive" src="https://1">');
 
         const url = await fetch.getGarfieldComicUrl();
-        
+
         expect(url).toEqual('https://1');
     });
 
@@ -42,7 +39,7 @@ describe('fetch', () => {
             .reply(200, '<div class="entry-content"><p><img src="http://1.jpg"></p></div>');
 
         const url = await fetch.getCommitStripUrl();
-        
+
         expect(url).toEqual('http://1.jpg');
     });
 
@@ -52,7 +49,7 @@ describe('fetch', () => {
             .reply(200, '<div id="comic"> <img src="//digital_resource_lifespan.png"> </div>');
 
         const url = await fetch.getXKCDUrl();
-        
+
         expect(url).toEqual('https://digital_resource_lifespan.png');
     });
 
@@ -62,7 +59,7 @@ describe('fetch', () => {
             .reply(200, `<div id="daily"> <img src="/img/1.png"> </div>`);
 
         const url = await fetch.getDailyUrl();
-        
+
         expect(url).toEqual('http://daily.art.pl/img/1.png');
     });
 
@@ -78,7 +75,7 @@ describe('fetch', () => {
             `);
 
         const url = await fetch.getTurnoffUrl();
-        
+
         expect(url).toEqual('http://turnoff.us/image/en/depressed-developer-22.png');
     });
 });

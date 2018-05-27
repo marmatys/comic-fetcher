@@ -1,11 +1,8 @@
-"use strict";
-
 const nock = require('nock');
 const notify = require('../services/notify');
 const _ = require('lodash');
 
 describe('notify', () => {
-
     afterEach(function () {
         nock.cleanAll();
     });
@@ -15,12 +12,12 @@ describe('notify', () => {
         let notifyUrl = 'http://www.example.com';
         let request = nock(notifyUrl)
             .post('/', {
-                text : imgUrl
+                text: imgUrl
             })
             .reply(200);
 
         await notify.notifySlack(notifyUrl, imgUrl);
-        
+
         expect(request.isDone()).toBeTruthy();
     });
 
@@ -34,6 +31,6 @@ describe('notify', () => {
             await notify.notifySlack(notifyUrl, imgUrl);
 
             expect(request.isDone()).toBeFalsy();
-        })
+        });
     });
 });

@@ -1,5 +1,3 @@
-"use strict";
-
 const cheerio = require('cheerio');
 const request = require('request-promise');
 const tough = require('tough-cookie');
@@ -9,24 +7,24 @@ function getDilbertComicUrl() {
         .then(body => getImage(body, '.img-comic'));
 
     function fetchDilbert() {
-        return request({uri: 'http://dilbert.com/'});
+        return request({ uri: 'http://dilbert.com/' });
     }
 }
 
 function getXKCDUrl() {
-    return request({uri : 'https://xkcd.com/'})
+    return request({ uri: 'https://xkcd.com/' })
         .then(body => getImage(body, '#comic img'))
         .then(url => 'https:' + url);
 }
 
 function getDailyUrl() {
-    return request({url: 'http://daily.art.pl'})
+    return request({ url: 'http://daily.art.pl' })
         .then(body => getImage(body, '#daily img'))
         .then(url => 'http://daily.art.pl' + url);
 }
 
 function getTurnoffUrl() {
-    return request({url: 'http://turnoff.us/'})
+    return request({ url: 'http://turnoff.us/' })
         .then(body => getImage(body, '.post-content img'))
         .then(url => 'http://turnoff.us' + url);
 }
@@ -41,9 +39,9 @@ function getGarfieldComicUrl() {
         jar.setCookie(cookie, 'https://garfield.com/');
         let options = {
             uri: 'https://garfield.com/',
-            jar : jar
+            jar: jar
         };
-        return request(options)
+        return request(options);
     }
 
     function defaultCookie() {
@@ -63,11 +61,11 @@ function getCommitStripUrl() {
         .then(body => getImage(body, '.entry-content img'));
 
     function fetchDetailPage(url) {
-        return request({uri: url});
+        return request({ uri: url });
     }
 
     function fetchCommitStripSite() {
-        return request({uri: 'http://www.commitstrip.com/en/'});
+        return request({ uri: 'http://www.commitstrip.com/en/' });
     }
 
     function getFirstUrl(body) {
@@ -82,10 +80,10 @@ function getImage(body, selector) {
 }
 
 module.exports = {
-    getDilbertComicUrl : getDilbertComicUrl,
-    getGarfieldComicUrl : getGarfieldComicUrl,
-    getCommitStripUrl : getCommitStripUrl,
-    getXKCDUrl : getXKCDUrl,
-    getDailyUrl : getDailyUrl,
-    getTurnoffUrl : getTurnoffUrl
+    getDilbertComicUrl: getDilbertComicUrl,
+    getGarfieldComicUrl: getGarfieldComicUrl,
+    getCommitStripUrl: getCommitStripUrl,
+    getXKCDUrl: getXKCDUrl,
+    getDailyUrl: getDailyUrl,
+    getTurnoffUrl: getTurnoffUrl
 };

@@ -1,0 +1,23 @@
+{
+    "extends": "standard",
+    "env": {
+        "jest": true
+    },
+    "rules": {
+        "indent": [
+            "error",
+            4
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "key-spacing": [
+            "error",
+            {
+                "beforeColon": false
+            }
+        ],
+        "space-before-function-paren": "off"
+    }
+}

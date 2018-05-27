@@ -7,40 +7,39 @@ const Q = require('q');
 
 let config;
 try {
-    config = require('./config')
-} catch(e) {
+    config = require('./config');
+} catch (e) {
     config = {
-        notifyUrl : 'http://www.example.com'
-    }
+        notifyUrl: 'http://www.example.com'
+    };
 }
 
 const comicConfig = [
     {
-        name : 'dilbert',
-        fetcher : fetch.getDilbertComicUrl
+        name: 'dilbert',
+        fetcher: fetch.getDilbertComicUrl
     }, {
-        name : 'garfield',
-        fetcher : fetch.getGarfieldComicUrl
+        name: 'garfield',
+        fetcher: fetch.getGarfieldComicUrl
     }, {
-        name : 'commitstrip',
-        fetcher : fetch.getCommitStripUrl
+        name: 'commitstrip',
+        fetcher: fetch.getCommitStripUrl
     }, {
-        name : 'xkcd',
-        fetcher : fetch.getXKCDUrl
+        name: 'xkcd',
+        fetcher: fetch.getXKCDUrl
     }, {
-        name : 'daily',
-        fetcher : fetch.getDailyUrl
+        name: 'daily',
+        fetcher: fetch.getDailyUrl
     }, {
-        name : 'turnoff',
-        fetcher : fetch.getTurnoffUrl
+        name: 'turnoff',
+        fetcher: fetch.getTurnoffUrl
     }];
 
 module.exports.checkComics = (event, context, callback) => {
-
     Q.all(Array.from(comicConfig, commic => {
-       commic.fetcher()
-           .then(imgUrl => persist.putIfNotExists(commic.name, imgUrl))
-           .then(url => notify.notifySlack(config.notifyUrl, url))
+        commic.fetcher()
+            .then(imgUrl => persist.putIfNotExists(commic.name, imgUrl))
+            .then(url => notify.notifySlack(config.notifyUrl, url));
     }))
         .then(() => callback(null, 'OK'))
         .catch(err => callback(err, null));
