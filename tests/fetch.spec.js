@@ -13,7 +13,7 @@ describe('fetch', () => {
 
         const url = await fetch.getDilbertComicUrl();
 
-        expect(url).toEqual('1');
+        expect(url).toEqual('https://1');
     });
 
     it('get img url for garfield', async () => {

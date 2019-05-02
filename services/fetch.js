@@ -4,7 +4,8 @@ const tough = require('tough-cookie');
 
 function getDilbertComicUrl() {
     return fetchDilbert()
-        .then(body => getImage(body, '.img-comic'));
+        .then(body => getImage(body, '.img-comic'))
+        .then(url => `https://${url}`);
 
     function fetchDilbert() {
         return request({ uri: 'http://dilbert.com/' });
