@@ -9,7 +9,7 @@ describe('fetch', () => {
     it('get img url for dilbert', async () => {
         nock('http://dilbert.com')
             .get('/')
-            .reply(200, '<img class="img-comic" src="1"><img class="img-comic" src="2">');
+            .reply(200, '<img class="img-comic" src="//1"><img class="img-comic" src="//2">');
 
         const url = await fetch.getDilbertComicUrl();
 
