@@ -34,10 +34,10 @@ function getGarfieldComicUrl() {
         .then(body => getImage(body, 'img.img-responsive'));
 
     function fetchGarfieldSite() {
-        let cookie = defaultCookie();
-        let jar = request.jar();
+        const cookie = defaultCookie();
+        const jar = request.jar();
         jar.setCookie(cookie, 'https://garfield.com/');
-        let options = {
+        const options = {
             uri: 'https://garfield.com/',
             jar: jar
         };
